@@ -1,16 +1,29 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+
+import { ImageBackground, StyleSheet, View, Text, Button, TextInput } from 'react-native';
 
 export default function Chat({ route, navigation }) {
   //Use of the route.params object to access the passed "name" in Chat sreen
   const name = route.params.name;
+  const selectedColor = route.params.selectedColor;
 
   // Display the passed "name" in the navigation bar of Chat screen by using the navigation.setOptions function
   navigation.setOptions({title: name});
 
     return (
-      <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, {name}!</Text>
+      <View style={[styles.container, {backgroundColor: selectedColor }]}>
+          <Text style={styles.textColor}> Hello, {name}!</Text>
       </View>
     )
   }
+
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "black"
+    },
+    textColor: {
+      color: "white"
+    }
+  });
