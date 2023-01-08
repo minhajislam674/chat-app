@@ -12,7 +12,7 @@ export default function Chat({ route, navigation }) {
 
     return (
       <View style={[styles.container, {backgroundColor: selectedColor }]}>
-          <Text style={styles.textColor}> Hello, {name}!</Text>
+          <Text style={styles.textColor}> Hello!</Text>
       </View>
     )
   }
