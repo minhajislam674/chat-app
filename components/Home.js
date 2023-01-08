@@ -4,7 +4,6 @@ import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput } 
 
 export default function Home({navigation}) {
   const [name, setName] = useState("");
-  const [inputValue, setInputValue] = useState("");
   const [selectedColor, setSelectedColor] = useState("#474056");
 
  /*Declaring function handlePress that uses the navigation.navigate to navigate to a new screen.
@@ -12,7 +11,6 @@ export default function Home({navigation}) {
  an object containing data that we want to pass to the new screen, in our case "name". */
 
   const handlePress = () => {
-    setName(inputValue);
     navigation.navigate('Chat', {
       name,selectedColor,
     });
@@ -44,8 +42,8 @@ export default function Home({navigation}) {
                     placeholder="Type your name"
                     style={styles.input}
                     //onChangeText prop is a prop of the TextInput component, and it is called every time the text in the TextInput field changes.
-                    onChangeText={text => setInputValue(text)}
-                    value={inputValue}
+                    onChangeText={text => setName(text)}
+                    value={name}
                      >
             </TextInput>
             <Text style={styles.chooseThemeText}>Choose your theme:</Text>
