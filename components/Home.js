@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
 
+
 export default function Home({navigation}) {
   const [name, setName] = useState("");
   const [selectedColor, setSelectedColor] = useState("#474056");
