@@ -32,26 +32,7 @@ export default function Chat({ route, navigation }) {
     // Display the passed "name" in the navigation bar of Chat screen by using the navigation.setOptions function
     navigation.setOptions({ title: name });
 
-    //Storing the query as "onCollectionChange" variable.
-    const onCollectionChange = (querySnapshot => {
-      const messages = [];
-      // go through each document
-      querySnapshot.docs.forEach(doc => {
-        // get the QueryDocumentSnapshot's data
-        var data = doc.data();
-        messages.push({
-          _id: data._id,
-          text: data.text,
-          createdAt: data.createdAt.toDate(),
-          user: {
-            _id: data.user._id,
-            name: data.user.name,
-            avatar: data.user.avatar
-          }
-        });
-      });
-      setMessages(messages);
-    });
+
 
     // listen to authentication events
     const unsubscribeAuth = firebase.auth().onAuthStateChanged( async (user) => {
@@ -64,7 +45,7 @@ export default function Chat({ route, navigation }) {
 
     })
     //Using onSnapshot method to listen for real-time updates.
-    const unsubscribeUser = chatMessagesRef.orderBy('createdAt', 'desc').onSnapshot(onCollectionChange)
+    const unsubscribeUser = chatMessagesRef.orderBy('createdAt', 'desc').onSnapshot(onCollectionChange);
 
     //Component unmounts. Stops listening for real-time updates from Firestore. Stop listening for authentication events.
     return () => {
@@ -72,6 +53,27 @@ export default function Chat({ route, navigation }) {
       unsubscribeAuth();
     } 
   }, []);
+
+  //Storing the query as "onCollectionChange" variable.
+  const onCollectionChange = (querySnapshot => {
+    const messages = [];
+    // go through each document
+    querySnapshot.docs.forEach(doc => {
+      // get the QueryDocumentSnapshot's data
+      var data = doc.data();
+      messages.push({
+        _id: data._id,
+        text: data.text,
+        createdAt: data.createdAt.toDate(),
+        user: {
+          _id: data.user._id,
+          name: data.user.name,
+          avatar: data.user.avatar
+        }
+      });
+    });
+    setMessages(messages);
+  });
 
 
 // The useCallback hook takes an array of messages as an argument and appends the new messages to the array of existing messages using the setMessages.
