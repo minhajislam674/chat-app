@@ -120,6 +120,7 @@ export default function Chat({ route, navigation }) {
       });
     });
     setMessages(messages);
+    saveMessages();
   });
 
 // The useCallback hook takes an array of messages as an argument and appends the new messages to the array of existing messages using the setMessages.
