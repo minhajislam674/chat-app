@@ -31,7 +31,7 @@ export default function Chat({ route, navigation }) {
   const [loggedInText, setLoggedInText] = useState('Please wait, you are getting logged in');
   const [isConnected, setIsConnected] = useState();
 
-  const saveMessages = async () => {
+  const saveMessages = async (messages) => {
     try {
       const jsonMessages = JSON.stringify(messages)
       await AsyncStorage.setItem('messages', jsonMessages);
@@ -66,7 +66,7 @@ export default function Chat({ route, navigation }) {
   useEffect(() => {
     // Display the passed "name" in the navigation bar of Chat screen by using the navigation.setOptions function
     navigation.setOptions({ title: name });
-    getMessages();
+    
     
     NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
@@ -75,6 +75,7 @@ export default function Chat({ route, navigation }) {
       } else {
         setIsConnected(false);
         console.log('offline');
+        getMessages();
       }
     });
 
@@ -95,7 +96,7 @@ export default function Chat({ route, navigation }) {
       unsubscribeUser();
       unsubscribeAuth();
     } 
-  }, []);
+  }, [isConnected]);
 
 
   //Storing the query as "onCollectionChange" variable.
@@ -120,7 +121,7 @@ export default function Chat({ route, navigation }) {
       });
     });
     setMessages(messages);
-    saveMessages();
+    saveMessages(messages);
   });
 
 // The useCallback hook takes an array of messages as an argument and appends the new messages to the array of existing messages using the setMessages.
