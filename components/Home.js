@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function Home({navigation}) {
@@ -42,16 +42,21 @@ export default function Home({navigation}) {
           <Text style={styles.title}></Text>
 
           <View style={styles.whiteContainer}>
-            <TextInput
-              accessibilityLabel="Name Input field"
-              accessibilityHint="Let you type your name"
-              placeholder="Type your name"
-              style={styles.input}
-              //onChangeText prop is a prop of the TextInput component, and it is called every time the text in the TextInput field changes.
-              onChangeText={text => setName(text)}
-              value={name}
-              >
-            </TextInput>
+            <View style={styles.inputWrapper}>
+              <Icon name="user" size={20} color="#757080" />
+              <TextInput
+                accessibilityLabel="Name Input field"
+                accessibilityHint="Let you type your name"
+                placeholder="Type your name"
+                style={styles.input}
+                //onChangeText prop is a prop of the TextInput component, and it is called every time the text in the TextInput field changes.
+                onChangeText={text => setName(text)}
+                value={name}
+                >
+              </TextInput>
+
+            </View>
+
             <Text
               accessibilityLabel="Choose your theme"
               style={styles.chooseThemeText}
@@ -121,21 +126,23 @@ export default function Home({navigation}) {
     },
     input: {
       height: 40,
+      margin: 10,
+      left: 20,
+      top: -40,
+      fontSize: 18,
+      borderRadius: 5,
+      zIndex: 100,
+    },
+
+    inputWrapper: {
+      height: 40,
       borderColor: '#CCCCCC',
       borderWidth: 1,
       margin: 10,
       padding: 10,
-      fontSize: 18,
       borderRadius: 5,
-      backgroundColor: '#FFFFFF',
-      shadowColor: '#000000',
-      shadowOpacity: 0.1,
-      shadowRadius: 5,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
     },
+
     startChatButton: {
       backgroundColor: "#757083",
       borderRadius: 10,
