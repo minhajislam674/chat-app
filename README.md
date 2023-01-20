@@ -1,11 +1,19 @@
 # ChatMate App
 
-> ChatMate is an app for mobile devices built using React Native. The app will
-> provide users with a chat interface and options to share images and their
-> location.
+> ChatMate is an app for mobile devices built using React Native. The app will provide users
+> with a chat interface and options to share images and their location.
 
-![](Screenshot_1674244270.png)
-![](Screenshot_1674244293.png)
+<img
+  src="/assets/Screenshot_1674244270.png"
+  alt="Alt text"
+  title="Optional title"
+  style="display: inline-block; width: 250px">
+<img
+  src="/assets/Screenshot_1674244293.png"
+  alt="Alt text"
+  title="Optional title"
+  style="display: inline-block; width: 250px">
+
 
 ## Key Features
 
