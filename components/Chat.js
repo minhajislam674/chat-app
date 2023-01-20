@@ -4,7 +4,9 @@ import { View, Platform, KeyboardAvoidingView,FlatList, Text, TouchableOpacity }
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
 import { StyleSheet } from 'react-native';
-
+import CustomActions from './CustomActions';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import MapView from 'react-native-maps';
 import * as firebase from 'firebase';
 import firebaseConfig from './utils/firebaseConfig';
 
@@ -27,15 +29,16 @@ export default function Chat({ route, navigation }) {
   const name = route.params.name;
 
   const [messages, setMessages] = useState([]); 
+ 
   const [uid, setUid] = useState(0);
   const [loggedInText, setLoggedInText] = useState('Please wait, you are getting logged in');
   const [isConnected, setIsConnected] = useState();
 
-  const saveMessages = async () => {
+  const saveMessages = async (messages) => {
     try {
       const jsonMessages = JSON.stringify(messages)
       await AsyncStorage.setItem('messages', jsonMessages);
-      console.log("Saving messages: ", jsonMessages);
+      // console.log("Saving messages: ", jsonMessages);
     } catch (error) {
       console.log(error.message);
     }
@@ -45,7 +48,7 @@ export default function Chat({ route, navigation }) {
     let messages = "";
     try {
       messages = await AsyncStorage.getItem("messages") || [];
-      console.log("called set state for messages", messages);
+      // console.log("called set state for messages", messages);
       const jsonMessages = JSON.parse(messages);
       setMessages(jsonMessages);
     } catch (error) {
@@ -66,7 +69,7 @@ export default function Chat({ route, navigation }) {
   useEffect(() => {
     // Display the passed "name" in the navigation bar of Chat screen by using the navigation.setOptions function
     navigation.setOptions({ title: name });
-    getMessages();
+    
     
     NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
@@ -75,6 +78,7 @@ export default function Chat({ route, navigation }) {
       } else {
         setIsConnected(false);
         console.log('offline');
+        getMessages();
       }
     });
 
@@ -95,7 +99,7 @@ export default function Chat({ route, navigation }) {
       unsubscribeUser();
       unsubscribeAuth();
     } 
-  }, []);
+  }, [isConnected]);
 
 
   //Storing the query as "onCollectionChange" variable.
@@ -110,16 +114,19 @@ export default function Chat({ route, navigation }) {
       var data = doc.data();
       messages.push({
         _id: data._id,
-        text: data.text,
+        text: data.text || null,
         createdAt: data.createdAt.toDate(),
         user: {
           _id: data.user._id,
           name: data.user.name,
           avatar: data.user.avatar
-        }
+        },
+        location: data.location || null,
+        image: data.image || null,
       });
     });
     setMessages(messages);
+    saveMessages(messages);
   });
 
 // The useCallback hook takes an array of messages as an argument and appends the new messages to the array of existing messages using the setMessages.
@@ -134,17 +141,45 @@ export default function Chat({ route, navigation }) {
   const addMessages = (messages) => {
     chatMessagesRef.add({
       _id: messages._id,
-      text: messages.text,
+      text: messages.text || null,
       createdAt: messages.createdAt,
       user: {
          _id: uid,
          name: name,
          avatar: messages.user.avatar,
-      }
+      },
+      location: messages.location || null,
+      image: messages.image || null,
     });
   }
 
-  
+  const renderCustomActions = (props) => {
+    return (
+      <CustomActions {...props}  />
+    )
+  }
+
+  const renderCustomView = ({currentMessage}) => {
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      )
+    }
+    return null;
+  }
 
   const renderBubble = (props) => {
     return (
@@ -170,25 +205,29 @@ export default function Chat({ route, navigation }) {
   }
 
     return (
-      <View
-        accessible={true}
-        accessibilityLabel="Chat screen"
-        style={[styles.container, {backgroundColor: selectedColor }]}
-      > 
-        {/* <Text> {loggedInText} </Text> */}
+      <ActionSheetProvider>
+        <View
+          accessible={true}
+          accessibilityLabel="Chat screen"
+          style={[styles.container, {backgroundColor: selectedColor }]}
+        > 
+          {/* <Text> {loggedInText} </Text> */}
 
-        <GiftedChat
-          renderBubble={renderBubble}
-          renderInputToolbar={renderInputToolbar}
-          messages={messages}
-          onSend={messages => onSend(messages)}
-          user={{
-            _id: uid,
-            avatar: "https://placeimg.com/140/140/people",
-          }}
-        />
-        {Platform.OS === "android" ? (<KeyboardAvoidingView behavior='height' />) : null }
-      </View>
+          <GiftedChat
+            renderBubble={renderBubble}
+            renderInputToolbar={renderInputToolbar}
+            renderActions = {renderCustomActions}
+            renderCustomView = {renderCustomView}
+            messages={messages}
+            onSend={messages => onSend(messages)}
+            user={{
+              _id: uid,
+              avatar: "https://placeimg.com/140/140/people",
+            }}
+          />
+          {Platform.OS === "android" ? (<KeyboardAvoidingView behavior='height' />) : null }
+        </View>
+      </ActionSheetProvider>
     )
   }
 
