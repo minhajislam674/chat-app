@@ -7,6 +7,7 @@ export default function Home({navigation}) {
   const [name, setName] = useState("");
   const [selectedColor, setSelectedColor] = useState("#474056");
 
+
  /*Declaring function handlePress that uses the navigation.navigate to navigate to a new screen.
  It receives two arguments: the name of the screen to navigate to, "Chat" in this case and
  an object containing data that we want to pass to the new screen, in our case "name". */
@@ -21,6 +22,7 @@ export default function Home({navigation}) {
     setSelectedColor(color);
   };
 
+
   const getColorStyle = (color) => {
     if (selectedColor === color) {
       return styles.selected;
@@ -29,14 +31,15 @@ export default function Home({navigation}) {
     }
   };
 
+  
 
     return (
       <View accessible={true} style={[styles.container, { backgroundColor: selectedColor }]}>
         <ImageBackground
-            source={require("../assets/background.png")}
+            source={require("../assets/ChatMate-01.jpg")}
             style={styles.image}
         >
-          <Text style={styles.title}>ChatMate</Text>
+          <Text style={styles.title}></Text>
 
           <View style={styles.whiteContainer}>
             <TextInput
@@ -59,20 +62,20 @@ export default function Home({navigation}) {
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the black color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#474056" }, getColorStyle("#474056"),]}
-                onPress={() => handleColorSelect("#474056")}
+                style={[styles.colorCircle, { backgroundColor: "#4A454D" }, getColorStyle("#4A454D"),]}
+                onPress={() => handleColorSelect("#4A454D")}
               />
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the grey color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#8A95A5"}, getColorStyle("#8A95A5") ]}
-                onPress={() => handleColorSelect("#8A95A5")}
+                style={[styles.colorCircle, { backgroundColor: "#91A182"}, getColorStyle("#91A182") ]}
+                onPress={() => handleColorSelect("#91A182")}
               />
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the olive green color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#B9C6AE"}, getColorStyle("#B9C6AE") ]}
-                onPress={() => handleColorSelect("#B9C6AE")}
+                style={[styles.colorCircle, { backgroundColor: "#2F444F"}, getColorStyle("#2F444F") ]}
+                onPress={() => handleColorSelect("#2F444F")}
               />
             </View>
 
@@ -82,7 +85,7 @@ export default function Home({navigation}) {
               accessibilityLabel="Start Chatting"
               accessibilityHint="Navigates to the Chat screen"
               accessibilityRole="button"
-              style={styles.startChatButton}
+              style={[styles.startChatButton, { backgroundColor: selectedColor} ]}
               onPress={handlePress}> 
               <Text style={styles.startChatButtonText}> Start Chatting </Text>
             </TouchableOpacity>
