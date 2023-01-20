@@ -122,7 +122,7 @@ export default function Chat({ route, navigation }) {
           avatar: data.user.avatar
         },
         location: data.location || null,
-        image: data.image,
+        image: data.image || null,
       });
     });
     setMessages(messages);
