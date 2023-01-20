@@ -1,11 +1,12 @@
 import React, { useState }  from 'react';
 import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function Home({navigation}) {
   const [name, setName] = useState("");
   const [selectedColor, setSelectedColor] = useState("#474056");
+
 
  /*Declaring function handlePress that uses the navigation.navigate to navigate to a new screen.
  It receives two arguments: the name of the screen to navigate to, "Chat" in this case and
@@ -21,6 +22,7 @@ export default function Home({navigation}) {
     setSelectedColor(color);
   };
 
+
   const getColorStyle = (color) => {
     if (selectedColor === color) {
       return styles.selected;
@@ -29,26 +31,32 @@ export default function Home({navigation}) {
     }
   };
 
+  
 
     return (
       <View accessible={true} style={[styles.container, { backgroundColor: selectedColor }]}>
         <ImageBackground
-            source={require("../assets/background.png")}
+            source={require("../assets/ChatMate-01.jpg")}
             style={styles.image}
         >
-          <Text style={styles.title}>ChatMate</Text>
+          <Text style={styles.title}></Text>
 
           <View style={styles.whiteContainer}>
-            <TextInput
-              accessibilityLabel="Name Input field"
-              accessibilityHint="Let you type your name"
-              placeholder="Type your name"
-              style={styles.input}
-              //onChangeText prop is a prop of the TextInput component, and it is called every time the text in the TextInput field changes.
-              onChangeText={text => setName(text)}
-              value={name}
-              >
-            </TextInput>
+            <View style={styles.inputWrapper}>
+              <Icon name="user" size={20} color="#757080" />
+              <TextInput
+                accessibilityLabel="Name Input field"
+                accessibilityHint="Let you type your name"
+                placeholder="Type your name"
+                style={styles.input}
+                //onChangeText prop is a prop of the TextInput component, and it is called every time the text in the TextInput field changes.
+                onChangeText={text => setName(text)}
+                value={name}
+                >
+              </TextInput>
+
+            </View>
+
             <Text
               accessibilityLabel="Choose your theme"
               style={styles.chooseThemeText}
@@ -59,20 +67,20 @@ export default function Home({navigation}) {
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the black color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#474056" }, getColorStyle("#474056"),]}
-                onPress={() => handleColorSelect("#474056")}
+                style={[styles.colorCircle, { backgroundColor: "#4A454D" }, getColorStyle("#4A454D"),]}
+                onPress={() => handleColorSelect("#4A454D")}
               />
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the grey color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#8A95A5"}, getColorStyle("#8A95A5") ]}
-                onPress={() => handleColorSelect("#8A95A5")}
+                style={[styles.colorCircle, { backgroundColor: "#91A182"}, getColorStyle("#91A182") ]}
+                onPress={() => handleColorSelect("#91A182")}
               />
               <TouchableOpacity
                 accessibilityLabel="Color circle"
                 accessibilityHint="Selects the olive green color background theme"
-                style={[styles.colorCircle, { backgroundColor: "#B9C6AE"}, getColorStyle("#B9C6AE") ]}
-                onPress={() => handleColorSelect("#B9C6AE")}
+                style={[styles.colorCircle, { backgroundColor: "#2F444F"}, getColorStyle("#2F444F") ]}
+                onPress={() => handleColorSelect("#2F444F")}
               />
             </View>
 
@@ -82,7 +90,7 @@ export default function Home({navigation}) {
               accessibilityLabel="Start Chatting"
               accessibilityHint="Navigates to the Chat screen"
               accessibilityRole="button"
-              style={styles.startChatButton}
+              style={[styles.startChatButton, { backgroundColor: selectedColor} ]}
               onPress={handlePress}> 
               <Text style={styles.startChatButtonText}> Start Chatting </Text>
             </TouchableOpacity>
@@ -118,21 +126,23 @@ export default function Home({navigation}) {
     },
     input: {
       height: 40,
+      margin: 10,
+      left: 20,
+      top: -40,
+      fontSize: 18,
+      borderRadius: 5,
+      zIndex: 100,
+    },
+
+    inputWrapper: {
+      height: 40,
       borderColor: '#CCCCCC',
       borderWidth: 1,
       margin: 10,
       padding: 10,
-      fontSize: 18,
       borderRadius: 5,
-      backgroundColor: '#FFFFFF',
-      shadowColor: '#000000',
-      shadowOpacity: 0.1,
-      shadowRadius: 5,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
     },
+
     startChatButton: {
       backgroundColor: "#757083",
       borderRadius: 10,
